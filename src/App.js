@@ -1,23 +1,47 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import { Button, FormControl, Input, InputLabel } from '@material-ui/core'
+import Todo from './components/Todo'
+import { db } from './firebaseconfig'
+import { collection,orderBy, onSnapshot, serverTimestamp, addDoc } from 'firebase/firestore';
 import './App.css';
 
 function App() {
+  const [todos, setTodos] = useState([])
+  const [input, setInput] = useState('')
+  useEffect(() => {
+    //const q = query(collection(db, 'todos'), orderBy('timestamp','desc'))
+    onSnapshot(collection(db, 'todos'), (snapshot) => {
+      setTodos(snapshot.docs.map(doc => ({
+        id: doc.id,
+        item: doc.data()
+      })))
+    })
+  }, [input])
+
+  const addTodo = e => {
+    e.preventDefault()
+    addDoc(collection(db,'todos'),{
+      todo: input,
+      timestamp: serverTimestamp()
+    })
+    setInput('')
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>RAFA TODO App</h1>
+      <form>
+        <FormControl>
+          <InputLabel>Escribe un TODO</InputLabel>
+          <Input value={input} onChange={e => setInput(e.target.value)} />
+        </FormControl>
+        <Button type="submit" onClick={addTodo} variant="contained" color="primary" disabled={!input}>Agregar TODO</Button>
+
+
+      </form>
+      <ul>
+        {todos.map(it => <Todo key={it.id} arr={it} />)}
+      </ul>
     </div>
   );
 }
