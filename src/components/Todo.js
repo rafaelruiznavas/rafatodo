@@ -1,6 +1,6 @@
 import { db } from '../firebaseconfig'
-import { collection,doc, deleteDoc } from 'firebase/firestore';
-import { List, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core"
+import { doc, deleteDoc } from 'firebase/firestore';
+import { List, ListItem, ListItemText } from "@material-ui/core"
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import './Todo.css'
 

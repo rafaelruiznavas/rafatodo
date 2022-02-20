@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, FormControl, Input, InputLabel } from '@material-ui/core'
 import Todo from './components/Todo'
 import { db } from './firebaseconfig'
-import { collection,orderBy, onSnapshot, serverTimestamp, addDoc } from 'firebase/firestore';
+import { collection, onSnapshot, serverTimestamp, addDoc } from 'firebase/firestore';
 import './App.css';
 
 function App() {
